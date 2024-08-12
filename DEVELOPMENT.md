@@ -2,9 +2,11 @@
 
 ## Setup
 
-1. Create a repository from the template https://github.com/actions/typescript-action
+1. Create a repository from the template
+   https://github.com/actions/typescript-action
 
-2. Clone the repository locally (this time through [GitHub Desktop](https://github.com/apps/desktop))
+2. Clone the repository locally (this time through
+   [GitHub Desktop](https://github.com/apps/desktop))
 
 3. Open local repository in VS Code Insiders
 
@@ -14,4 +16,4 @@
 
 ## Development
 
-1. 
+1.
