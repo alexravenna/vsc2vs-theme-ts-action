@@ -1,6 +1,6 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'VS Code to Visual Studio Theme Converter'
+description: 'A GitHub Action that converts a Visual Studio Code theme to a Visual Studio theme'
+author: 'Alex Ravenna'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
@@ -10,14 +10,14 @@ branding:
 # Define your inputs here.
 inputs:
   milliseconds:
-    description: 'Your input description here'
-    required: true
-    default: '1000'
+    description: 'The path to the VS Code theme JSON to be converted'
+    required: false
+    default: ''
 
 # Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  output-vsix:
+    description: 'The path to the output VSIX file'
 
 runs:
   using: node20
