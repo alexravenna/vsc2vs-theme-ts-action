@@ -16,4 +16,11 @@ export async function cloneRepository(
   })
 }
 
+export async function buildProject(): Promise<void> {
+  info('Building ThemeConverter project...')
+  await exec(
+    `dotnet build ${WORK_DIRECTORY}/ThemeConverter/ThemeConverter/ThemeConverter.csproj`
+  ).catch((error: Error) => {
+    setFailed(`Action failed with error: "${error.message}"`)
+  })
 }

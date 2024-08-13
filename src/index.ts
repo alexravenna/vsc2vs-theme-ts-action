@@ -1,6 +1,6 @@
 /**
  * The entrypoint for the action.
  */
-import { cloneRepository } from './themeConverter'
+import { cloneRepository, buildProject } from './themeConverter'
 
-cloneRepository()
+cloneRepository().then(() => buildProject())
