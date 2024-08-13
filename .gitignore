@@ -104,3 +104,4 @@ __tests__/runner/*
 
 # Project-specific files/folders
 work/
+*.pkgdef

@@ -14,7 +14,7 @@ inputs:
   path:
     description: 'The path to the VS Code theme JSON to be converted'
     required: false
-    default: ''
+    default: 'theme.json'
 
 # Define your outputs here.
 outputs:

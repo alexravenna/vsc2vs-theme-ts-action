@@ -7,3 +7,5 @@ const WORK_DIRECTORY = 'work'
 
 // Clone and build ThemeConverter program
 cloneRepository(WORK_DIRECTORY).then(() => buildProject(WORK_DIRECTORY))
+
+// Convert theme JSON
