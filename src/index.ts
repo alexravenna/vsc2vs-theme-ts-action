@@ -3,4 +3,7 @@
  */
 import { cloneRepository, buildProject } from './themeConverter'
 
-cloneRepository().then(() => buildProject())
+const WORK_DIRECTORY = 'work'
+
+// Clone and build ThemeConverter program
+cloneRepository(WORK_DIRECTORY).then(() => buildProject(WORK_DIRECTORY))
