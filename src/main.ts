@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import { cloneRepository, buildProject } from "./themeConverter";
+import { dependencyChecks } from "./checks";
 
 const WORK_DIRECTORY = "work";
 
@@ -9,6 +10,9 @@ const WORK_DIRECTORY = "work";
  */
 export async function run(): Promise<void> {
     try {
+        // Run dependency checks first
+        dependencyChecks();
+
         // Clone and build ThemeConverter program
         cloneRepository(WORK_DIRECTORY).then(() =>
             buildProject(WORK_DIRECTORY),
