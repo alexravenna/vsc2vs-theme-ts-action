@@ -103,5 +103,5 @@ __tests__/runner/*
 *.code-workspace
 
 # Project-specific files/folders
-work/
+work
 *.pkgdef
