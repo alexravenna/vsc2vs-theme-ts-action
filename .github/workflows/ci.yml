@@ -57,7 +57,7 @@ jobs:
               id: test-action
               uses: ./
               with:
-                  path: theme.json
+                  theme-path: theme.json
 
             - name: Print Output
               id: output
