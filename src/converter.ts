@@ -3,7 +3,7 @@ import { exec } from "@actions/exec";
 
 /**
  * Converts the given VS Code theme to a Visual Studio theme.
- * @param dir 
+ * @param dir
  */
 export async function convertTheme(dir: string): Promise<void> {
     const themeToConvert = getInput("path");

@@ -5,5 +5,6 @@ import { exec } from "@actions/exec";
  * - Git
  * - .NET CLI
  */
-export async function dependencyChecks() : Promise<void> {
+export async function dependencyChecks(): Promise<void> {
+    await exec("git").catch()
 }
