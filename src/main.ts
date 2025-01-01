@@ -11,12 +11,11 @@ const WORK_DIRECTORY = "work";
 export async function run(): Promise<void> {
     try {
         // Run dependency checks first
-        dependencyChecks();
+        await dependencyChecks();
 
         // Clone and build ThemeConverter program
-        cloneRepository(WORK_DIRECTORY).then(() =>
-            buildProject(WORK_DIRECTORY),
-        );
+        await cloneRepository(WORK_DIRECTORY);
+        await buildProject(WORK_DIRECTORY);
 
         // Convert theme JSON
         const path = core.getInput("path");
