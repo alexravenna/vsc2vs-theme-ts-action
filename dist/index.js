@@ -25627,18 +25627,28 @@ module.exports = {
 /***/ }),
 
 /***/ 2122:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.dependencyChecks = dependencyChecks;
+const core_1 = __nccwpck_require__(7484);
+const exec_1 = __nccwpck_require__(5236);
 /**
  * Check for necessary tools on the system:
  * - Git
  * - .NET CLI
  */
-async function dependencyChecks() { }
+async function dependencyChecks() {
+    try {
+        await (0, exec_1.exec)("git --version");
+        await (0, exec_1.exec)("dotnet --info");
+    }
+    catch (error) {
+        (0, core_1.setFailed)(`Action failed with error: "${error.message}"`);
+    }
+}
 
 
 /***/ }),
@@ -25694,9 +25704,10 @@ const WORK_DIRECTORY = "work";
 async function run() {
     try {
         // Run dependency checks first
-        (0, checks_1.dependencyChecks)();
+        await (0, checks_1.dependencyChecks)();
         // Clone and build ThemeConverter program
-        (0, themeConverter_1.cloneRepository)(WORK_DIRECTORY).then(() => (0, themeConverter_1.buildProject)(WORK_DIRECTORY));
+        await (0, themeConverter_1.cloneRepository)(WORK_DIRECTORY);
+        await (0, themeConverter_1.buildProject)(WORK_DIRECTORY);
         // Convert theme JSON
         const path = core.getInput("path");
         // Set outputs for other workflow steps to use
@@ -25728,13 +25739,16 @@ const core_1 = __nccwpck_require__(7484);
  * @param cloneDir the directory to clone the ThemeConverter project to
  */
 async function cloneRepository(cloneDir) {
-    (0, core_1.info)("Cloning ThemeConverter repo...");
-    await (0, exec_1.exec)("git clone", [
-        "https://github.com/microsoft/theme-converter-for-vs",
-        cloneDir,
-    ]).catch((error) => {
+    (0, core_1.info)(`Cloning ThemeConverter repo to "${cloneDir}"...`);
+    try {
+        await (0, exec_1.exec)("git clone", [
+            "https://github.com/microsoft/theme-converter-for-vs",
+            cloneDir,
+        ]);
+    }
+    catch (error) {
         (0, core_1.setFailed)(`Action failed with error: "${error.message}"`);
-    });
+    }
 }
 /**
  * Builds the ThemeConverter project.
@@ -25742,9 +25756,9 @@ async function cloneRepository(cloneDir) {
  * @param buildDir the directory to build the ThemeConverter project in
  */
 async function buildProject(buildDir) {
-    (0, core_1.info)("Building ThemeConverter project...");
+    (0, core_1.info)(`Building ThemeConverter project in "${buildDir}"...`);
     try {
-        await (0, exec_1.exec)(`cd ${buildDir}/ThemeConverter/ThemeConverter/`);
+        process.chdir(`${(0, core_1.toPlatformPath)(`${buildDir}/ThemeConverter/ThemeConverter/`)}`);
         await (0, exec_1.exec)(`dotnet build ThemeConverter.csproj`);
     }
     catch (error) {

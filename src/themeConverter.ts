@@ -1,5 +1,5 @@
-import { exec } from "@actions/exec";
-import { setFailed, info } from "@actions/core";
+import { exec,  } from "@actions/exec";
+import { toPlatformPath, setFailed, info } from "@actions/core";
 
 /**
  * Clones the ThemeConverter project.
@@ -7,7 +7,7 @@ import { setFailed, info } from "@actions/core";
  * @param cloneDir the directory to clone the ThemeConverter project to
  */
 export async function cloneRepository(cloneDir: string): Promise<void> {
-    info("Cloning ThemeConverter repo...");
+    info(`Cloning ThemeConverter repo to "${cloneDir}"...`);
 
     try {
         await exec("git clone", [
@@ -25,10 +25,10 @@ export async function cloneRepository(cloneDir: string): Promise<void> {
  * @param buildDir the directory to build the ThemeConverter project in
  */
 export async function buildProject(buildDir: string): Promise<void> {
-    info("Building ThemeConverter project...");
+    info(`Building ThemeConverter project in "${buildDir}"...`);
 
     try {
-        await exec(`cd ${buildDir}/ThemeConverter/ThemeConverter/`);
+        process.chdir(`${toPlatformPath(`${buildDir}/ThemeConverter/ThemeConverter/`)}`);
         await exec(`dotnet build ThemeConverter.csproj`);
     } catch (error) {
         setFailed(`Action failed with error: "${(error as Error).message}"`);
