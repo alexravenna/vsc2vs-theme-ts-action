@@ -9,12 +9,14 @@ import { setFailed, info } from "@actions/core";
 export async function cloneRepository(cloneDir: string): Promise<void> {
     info("Cloning ThemeConverter repo...");
 
-    await exec("git clone", [
-        "https://github.com/microsoft/theme-converter-for-vs",
-        cloneDir,
-    ]).catch((error: Error) => {
-        setFailed(`Action failed with error: "${error.message}"`);
-    });
+    try {
+        await exec("git clone", [
+            "https://github.com/microsoft/theme-converter-for-vs",
+            cloneDir,
+        ]);
+    } catch (error) {
+        setFailed(`Action failed with error: "${(error as Error).message}"`);
+    }
 }
 
 /**
