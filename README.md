@@ -3,6 +3,13 @@
 This GitHub Action converts a Visual Studio Code (VS Code) theme to a theme that
 can be installed in Visual Studio.
 
+## Prerequisites
+
+The runner executing this Action needs to have the following tools installed:
+
+- Git
+- the `dotnet` CLI
+
 ## How it works
 
 The steps that this action uses for converting a VS Code theme to a Visual
@@ -14,6 +21,9 @@ Studio VSIX:
 3. Run `bin\Debug\net6.0\ThemeConverter.exe` with extension .json file → creates
    a .pkgdef file
 4. In VS 2022 create new Empty VSIX Project
+
+    a. This is done programmatically with the `vsix` template for `dotnet new`
+
 5. Add converted .pkgdef file(s)
 6. Edit the properties of the .pkgdef file:
 
