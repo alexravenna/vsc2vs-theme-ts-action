@@ -1,4 +1,4 @@
-import { exec,  } from "@actions/exec";
+import { exec } from "@actions/exec";
 import { toPlatformPath, setFailed, info } from "@actions/core";
 
 /**
@@ -28,8 +28,9 @@ export async function buildProject(buildDir: string): Promise<void> {
     info(`Building ThemeConverter project in "${buildDir}"...`);
 
     try {
-        process.chdir(`${toPlatformPath(`${buildDir}/ThemeConverter/ThemeConverter/`)}`);
-        await exec(`dotnet build ThemeConverter.csproj`);
+        await exec(
+            `dotnet build ${toPlatformPath(`${buildDir}/ThemeConverter/ThemeConverter/ThemeConverter.csproj`)}`,
+        );
     } catch (error) {
         setFailed(`Action failed with error: "${(error as Error).message}"`);
     }

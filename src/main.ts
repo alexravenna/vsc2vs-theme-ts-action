@@ -15,7 +15,8 @@ export async function run(): Promise<void> {
 
         // Clone and build ThemeConverter program
         await cloneRepository(WORK_DIRECTORY);
-        await buildProject(WORK_DIRECTORY);
+        const projectDir = await buildProject(WORK_DIRECTORY);
+        if (projectDir === undefined) throw new Error();
 
         // Convert theme JSON
         const path = core.getInput("path");
@@ -24,6 +25,6 @@ export async function run(): Promise<void> {
         core.setOutput("output-vsix", "");
     } catch (error) {
         // Fail the workflow run if an error occurs
-        if (error instanceof Error) core.setFailed(error.message);
+        if (error instanceof Error) core.setFailed(error);
     }
 }

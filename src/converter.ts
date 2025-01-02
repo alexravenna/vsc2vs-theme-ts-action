@@ -1,16 +1,26 @@
-import { getInput, setFailed } from "@actions/core";
+import * as core from "@actions/core";
 import { exec } from "@actions/exec";
+import path from "path";
 
 /**
  * Converts the given VS Code theme to a Visual Studio theme.
  * @param dir
  */
-export async function convertTheme(dir: string): Promise<void> {
-    const themeToConvert = getInput("path");
+export async function convertTheme(
+    workDir: string,
+    themePath: string,
+): Promise<void> {
+    const themeDir = path.resolve(themePath);
+    core.info(`Converting theme ${themeDir}...`);
 
     try {
-        exec(`bin\Debug\net6.0\ThemeConverter.exe`, [`-i ${themeToConvert}`]);
+        // ThemeConverter looks for some files in the same directory as the executable relatively,
+        // so we have to execute it there and not from the action root
+        process.chdir(
+            `${core.toPlatformPath(`${workDir}/ThemeConverter/ThemeConverter/bin/Debug/net6.0`)}`,
+        );
+        await exec(`./ThemeConverter -i ${themeDir}`);
     } catch (error: any) {
-        setFailed(`Action failed with error: "${error.message}"`);
+        core.setFailed(`Action failed with error: "${error.message}"`);
     }
 }
