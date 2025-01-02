@@ -25653,6 +25653,71 @@ async function dependencyChecks() {
 
 /***/ }),
 
+/***/ 1443:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.convertTheme = convertTheme;
+const core = __importStar(__nccwpck_require__(7484));
+const exec_1 = __nccwpck_require__(5236);
+const path_1 = __importDefault(__nccwpck_require__(6928));
+/**
+ * Converts the given VS Code theme to a Visual Studio theme.
+ * @param dir
+ */
+async function convertTheme(workDir, themePath) {
+    const themeDir = path_1.default.resolve(themePath);
+    core.info(`Converting theme ${themeDir}...`);
+    try {
+        process.chdir(`${core.toPlatformPath(`${workDir}/ThemeConverter/ThemeConverter/bin/Debug/net6.0`)}`);
+        await (0, exec_1.exec)("./ThemeConverter", [`-i ${themeDir}`]);
+    }
+    catch (error) {
+        core.setFailed(`Action failed with error: "${error.message}"`);
+    }
+}
+
+
+/***/ }),
+
 /***/ 1730:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -25696,6 +25761,7 @@ exports.run = run;
 const core = __importStar(__nccwpck_require__(7484));
 const themeConverter_1 = __nccwpck_require__(1168);
 const checks_1 = __nccwpck_require__(2122);
+const converter_1 = __nccwpck_require__(1443);
 const WORK_DIRECTORY = "work";
 /**
  * The main function for the action.
@@ -25707,16 +25773,19 @@ async function run() {
         await (0, checks_1.dependencyChecks)();
         // Clone and build ThemeConverter program
         await (0, themeConverter_1.cloneRepository)(WORK_DIRECTORY);
-        await (0, themeConverter_1.buildProject)(WORK_DIRECTORY);
+        const projectDir = await (0, themeConverter_1.buildProject)(WORK_DIRECTORY);
+        if (projectDir === undefined)
+            throw new Error();
         // Convert theme JSON
-        const path = core.getInput("path");
+        // await convertTheme(projectDir, core.getInput("themePath"));
+        await (0, converter_1.convertTheme)(WORK_DIRECTORY, "theme.json");
         // Set outputs for other workflow steps to use
         core.setOutput("output-vsix", "");
     }
     catch (error) {
         // Fail the workflow run if an error occurs
         if (error instanceof Error)
-            core.setFailed(error.message);
+            core.setFailed(error);
     }
 }
 
@@ -25758,11 +25827,15 @@ async function cloneRepository(cloneDir) {
 async function buildProject(buildDir) {
     (0, core_1.info)(`Building ThemeConverter project in "${buildDir}"...`);
     try {
-        process.chdir(`${(0, core_1.toPlatformPath)(`${buildDir}/ThemeConverter/ThemeConverter/`)}`);
-        await (0, exec_1.exec)(`dotnet build ThemeConverter.csproj`);
+        // process.chdir(
+        //     `${toPlatformPath(`${buildDir}/ThemeConverter/ThemeConverter/`)}`,
+        // );
+        await (0, exec_1.exec)(`dotnet build ${(0, core_1.toPlatformPath)(`${buildDir}/ThemeConverter/ThemeConverter/ThemeConverter.csproj`)}`);
+        return process.cwd();
     }
     catch (error) {
         (0, core_1.setFailed)(`Action failed with error: "${error.message}"`);
+        return undefined;
     }
 }
 

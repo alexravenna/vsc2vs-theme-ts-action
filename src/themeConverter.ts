@@ -1,5 +1,5 @@
+import { info, toPlatformPath } from "@actions/core";
 import { exec } from "@actions/exec";
-import { toPlatformPath, setFailed, info } from "@actions/core";
 
 /**
  * Clones the ThemeConverter project.
@@ -15,7 +15,7 @@ export async function cloneRepository(cloneDir: string): Promise<void> {
             cloneDir,
         ]);
     } catch (error) {
-        setFailed(`Action failed with error: "${(error as Error).message}"`);
+        throw error;
     }
 }
 
@@ -32,6 +32,6 @@ export async function buildProject(buildDir: string): Promise<void> {
             `dotnet build ${toPlatformPath(`${buildDir}/ThemeConverter/ThemeConverter/ThemeConverter.csproj`)}`,
         );
     } catch (error) {
-        setFailed(`Action failed with error: "${(error as Error).message}"`);
+        throw error;
     }
 }

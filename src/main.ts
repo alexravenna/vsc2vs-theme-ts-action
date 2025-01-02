@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
-import { cloneRepository, buildProject } from "./themeConverter";
 import { dependencyChecks } from "./checks";
+import { convertTheme } from "./converter";
+import { buildProject, cloneRepository } from "./themeConverter";
 
 const WORK_DIRECTORY = "work";
 
@@ -19,12 +20,15 @@ export async function run(): Promise<void> {
         if (projectDir === undefined) throw new Error();
 
         // Convert theme JSON
-        const path = core.getInput("path");
+        // await convertTheme(projectDir, core.getInput("themePath"));
+        await convertTheme(WORK_DIRECTORY, "theme.json");
 
         // Set outputs for other workflow steps to use
         core.setOutput("output-vsix", "");
     } catch (error) {
         // Fail the workflow run if an error occurs
-        if (error instanceof Error) core.setFailed(error);
+        core.setFailed(
+            `Action failed with error: "${(error as Error).message}"`,
+        );
     }
 }
