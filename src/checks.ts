@@ -1,4 +1,3 @@
-import { setFailed } from "@actions/core";
 import { exec } from "@actions/exec";
 
 /**
@@ -11,6 +10,6 @@ export async function dependencyChecks(): Promise<void> {
         await exec("git --version");
         await exec("dotnet --info");
     } catch (error) {
-        setFailed(`Action failed with error: "${(error as Error).message}"`);
+        throw error;
     }
 }
