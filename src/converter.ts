@@ -19,6 +19,7 @@ export async function convertTheme(
         process.chdir(
             `${core.toPlatformPath(`${workDir}/ThemeConverter/ThemeConverter/bin/Debug/net6.0`)}`,
         );
+
         await exec(`./ThemeConverter -i ${themeDir}`);
     } catch (error: any) {
         core.setFailed(`Action failed with error: "${error.message}"`);

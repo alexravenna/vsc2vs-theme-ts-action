@@ -49,3 +49,4 @@ Studio VSIX:
 - [Bring VS Code Themes to Visual Studio (YouTube video)](https://www.youtube.com/watch?v=2Gwqr5uuBt4)
 - [Microsoft DevBlog post discussing custom Visual Studio themes and the Theme Converter](https://devblogs.microsoft.com/visualstudio/custom-themes/)
 - [theme-converter-for-vs GitHub repo](https://github.com/microsoft/theme-converter-for-vs)
+- [VSIX extension schema 2.0 reference](https://learn.microsoft.com/en-us/visualstudio/extensibility/vsix-extension-schema-2-0-reference?view=vs-2022)

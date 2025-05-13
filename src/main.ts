@@ -2,6 +2,7 @@ import * as core from "@actions/core";
 import { dependencyChecks } from "./checks";
 import { convertTheme } from "./converter";
 import { buildProject, cloneRepository } from "./themeConverter";
+import { PackageTheme } from "./packageTheme";
 
 const WORK_DIRECTORY = "work";
 
@@ -22,6 +23,8 @@ export async function run(): Promise<void> {
         // Convert theme JSON
         // await convertTheme(projectDir, core.getInput("themePath"));
         await convertTheme(WORK_DIRECTORY, "theme.json");
+
+        await PackageTheme();
 
         // Set outputs for other workflow steps to use
         core.setOutput("output-vsix", "");
