@@ -68,7 +68,7 @@
     },
     "dependencies": {
         "@actions/core": "^1.11.1",
-        "@actions/exec": "^1.1.1"
+        "@actions/exec": "^2.0.0"
     },
     "devDependencies": {
         "@jest/globals": "^30.2.0",
